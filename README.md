@@ -2,11 +2,12 @@
 
 > **W**ar**F**rame **M**arket **A**PI **R**esource **K**it for **E**xchange and **T**rade
 
-A lightweight, asynchronous Python API wrapper for Warframe.Market with built-in schema validation, multi-tier rate limiting, and Authentication support.
+A lightweight, asynchronous Python API wrapper for Warframe.Market with built-in schema validation, multi-tier rate limiting, and JWT authentication.
 
 ## Features
 
-- **Multi-version support**: Full coverage of API v2 (primary), API v1 (legacy endpoints), and WebSocket real-time updates
+- **Multi-version support**: Full coverage of API v2 (primary)
+- **WebSocket real-time updates**: Planned — discriminated union message dispatch (TODO)
 - **Schema validation**: Pydantic models for request/response validation and type safety
 - **Rate limiting**: Self-implemented multi-tier global token bucket algorithm to respect API limits
 - **Singleton client**: Single shared instance ensures rate limit state is consistent across all requests
@@ -19,8 +20,8 @@ A lightweight, asynchronous Python API wrapper for Warframe.Market with built-in
 | API Version | Status | Endpoints |
 |-------------|--------|-----------|
 | v2 | **Primary** | Listings, Orders, Stats, User endpoints |
-| v1 | Deprecated | Legacy endpoints not available in v2 |
-| WebSocket | Active | Real-time listing updates, order events |
+| v1 | Not implemented | Legacy endpoints — not yet supported |
+| WebSocket | **TODO** | Real-time listing updates, order events |
 
 ## Architecture
 
@@ -38,7 +39,18 @@ A multi-tier token bucket algorithm handles Warframe.Market's rate limits:
 
 ### Caching
 
-Manifest endpoints (`/api/py/items`, `/api/py/markets`, `/api/py/factions`) are cached locally using a file-based cache. Subsequent calls return cached data until the cache expires or is invalidated.
+Manifest endpoints are cached locally using a file-based cache (`.wfmarket_cache/`). Cache invalidation is driven by comparing collection hashes from `/v2/versions` against stored hashes.
+
+**Cached manifests:**
+
+- `/v2/items`
+- `/v2/riven/weapons`
+- `/v2/riven/attributes`
+- `/v2/liches`
+- `/v2/sisters`
+- `/v2/missions`
+- `/v2/npcs`
+- `/v2/locations`
 
 ### Schema Validation
 
@@ -49,6 +61,8 @@ All API responses are validated against Pydantic models. Invalid or unexpected r
 The project follows a TDD workflow using `unittest` and `VCR.py` for HTTP recording. VCR cassettes are stored in `tests/cassettes/` and capture real API responses for deterministic test runs without hitting Warframe.Market during CI.
 
 ## Project Structure
+
+Planned layout (implementation in progress):
 
 ```
 src/wfmarket/

@@ -47,20 +47,29 @@ The `Client` class is a singleton. The instance is exposed directly as `wfmarket
 
 The rate limiter uses a multi-tier token bucket:
 
-- **Global bucket**: Shared across all endpoints
-- **Per-endpoint bucket**: Separate tokens for endpoints with stricter limits
+- **Global bucket**: 3 requests/second across all generic API endpoints
+- **Per-endpoint bucket**: Separate tokens for endpoints with stricter limits (e.g., `/auction/search` is 15 requests/minute, subject to change)
 
-Token counts and refill rates are configured in the client. New endpoints inherit sensible defaults from the global bucket unless they have documented stricter limits.
+Per-endpoint requests are also counted against the global bucket — you cannot exceed 3 req/s overall even if fewer requests hit the restricted endpoint. Token counts and refill rates are configured in the client. New endpoints inherit sensible defaults from the global bucket unless they have documented stricter limits.
 
 ## Caching
 
-Manifest endpoints are cached locally to avoid redundant calls:
+Manifest endpoints are cached locally to avoid redundant calls. Cache lives in `.wfmarket_cache/` in the project root. Cache invalidation is driven by comparing collection hashes from `/v2/versions` against stored hashes, and optionally by checking the `updatedAt` timestamp (ISO format string).
 
-- `/api/py/items`
-- `/api/py/markets`
-- `/api/py/factions`
+Cached manifests:
 
-Cache lives in `.wfmarket_cache/` in the project root. Implement cache invalidation when manifests are known to change (e.g., after game updates).
+- `/v2/items`
+- `/v2/riven/weapons`
+- `/v2/riven/attributes`
+- `/v2/liches`
+- `/v2/sisters`
+- `/v2/missions`
+- `/v2/npcs`
+- `/v2/locations`
+
+## Authentication
+
+Current auth uses JWT. OAuth 2.0 is planned but not yet implemented.
 
 ## Exception Hierarchy
 
