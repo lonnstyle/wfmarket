@@ -103,3 +103,33 @@ WS message models go in `src/wfmarket/schemas/ws/`.
 - Tests must pass with cassette playback only (no live API calls)
 - Ensure Python 3.10 compatibility
 - All dependencies are pinned in pyproject.toml
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked in GitHub Issues via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout: `GLOSSARY.md` at root, `docs/adr/` for architecture decisions. See `docs/agents/domain.md`.
+
+### TDD
+
+Test-driven development (red → green loop). See `.agents/skills/tdd/SKILL.md`.
+
+### TDD extra
+
+Supplement to TDD for test environment modes: local dev site vs CI/cassette. See `.agents/skills/tdd-extra/SKILL.md`.
+
+### Pydantic schemas
+
+Pydantic V2 data model patterns for response/request models. See `.agents/skills/pydantic-schemas/SKILL.md`.
+
+### Rate limiting
+
+Multi-tier token bucket rate limiter (global + per-endpoint) implemented from scratch. See `.agents/skills/rate-limiting/SKILL.md`.
