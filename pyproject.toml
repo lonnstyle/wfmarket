@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wfmarket"
+description = "A Python package for interacting with the Warframe Market API."
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "lonnstyle" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+"Issue Tracker" = "https://github.com/lonnstyle/wfmarket/issues"
+"Source Code" = "https://github.com/lonnstyle/wfmarket"
+
+[tool.setuptools.dynamic]
+dependencies = { file = "requirements.txt" }
+
+[tool.setuptools]
+packages = ["wfmarket"]
+include-package-data = true
+
+[tool.ruff]
+line-length = 125
+ignore = []
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.format]
+line-ending = "lf"
+quote-style = "double"
