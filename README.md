@@ -65,7 +65,7 @@ The project follows a TDD workflow using `unittest` and `VCR.py` for HTTP record
 Planned layout (implementation in progress):
 
 ```
-src/wfmarket/
+wfmarket/
 ├── __init__.py      # Package exports
 ├── client.py        # Singleton Client class with rate limiter & cache
 ├── exceptions.py    # Custom exception hierarchy

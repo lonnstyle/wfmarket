@@ -17,11 +17,32 @@ This is a Python API wrapper for Warframe.Market built with httpx and Pydantic, 
 - Follow PEP 8 with 4-space indentation
 - All public APIs must have type hints (use `from __future__ import annotations`)
 - Package must expose `client: Client` and `Client` class in `__init__.py` with proper type annotations
-- Pydantic models go in `src/wfmarket/schemas/`, organized by API version (`v1/`, `v2/`, `ws/`)
+- Pydantic models go in `wfmarket/schemas/`, organized by API version (`v1/`, `v2/`, `ws/`)
 - Docstrings use Google style
+- Keep module docstrings brief (one-liner or two at most). Put detailed documentation in class/method docstrings instead. If more context is needed, write a dedicated doc or README file.
 - Private methods prefixed with `_`
 - No bare `except:` clauses
 - Use `async/await` consistently — all I/O is async
+
+## Ruff Linting
+
+Run `ruff check` before committing. Obey these rules in particular:
+
+- **UP035**: Use the latest replacement for deprecated imports (e.g., `collections.abc.Mapping` instead of `collections.Mapping`)
+- **RUF023**: Sort `__slots__` definitions alphabetically
+- **F401**: Remove unused imports
+
+General rules: follow PEP 8, prefer modern Python idioms, and keep the lint output clean.
+
+## Pre-commit Checks
+
+A pre-commit hook at `.git/hooks/pre-commit` runs automatically before every `git commit`:
+
+1. **`ruff format`** — reformats all Python files consistently
+2. **`ruff check --fix`** — auto-fixes lint issues; blocks the commit if any remain
+3. **`pyright`** — type-checks `wfmarket/` and `tests/`; blocks the commit on errors
+
+The hook uses local venv binaries (`venv/bin/ruff`, `venv/bin/pyright`) for speed. If you prefer the pre-commit framework instead, run `pre-commit install` to generate a hook from `.pre-commit-config.yaml`.
 
 ## Development Workflow (TDD)
 
@@ -73,7 +94,7 @@ Current auth uses JWT. OAuth 2.0 is planned but not yet implemented.
 
 ## Exception Hierarchy
 
-Custom exceptions in `src/wfmarket/exceptions.py`:
+Custom exceptions in `wfmarket/exceptions.py`:
 
 ```
 WfMarketError (base)
@@ -88,7 +109,7 @@ Always raise the most specific exception available. Never swallow exceptions sil
 
 ## WebSocket
 
-WebSocket support lives under `src/wfmarket/ws/`. Use `client.ws_connect()` as an async context manager:
+WebSocket support lives under `wfmarket/ws/`. Use `client.ws_connect()` as an async context manager:
 
 ```python
 async with client.ws_connect() as ws:
@@ -97,7 +118,7 @@ async with client.ws_connect() as ws:
         ...
 ```
 
-WS message models go in `src/wfmarket/schemas/ws/`.
+WS message models go in `wfmarket/schemas/ws/`.
 
 ## Adding New Endpoints
 

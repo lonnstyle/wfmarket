@@ -1,0 +1,25 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: venv/bin/ruff format
+        language: system
+        types_or: [python]
+        stages: [commit]
+
+      - id: ruff-check
+        name: ruff check --fix
+        entry: venv/bin/ruff check --fix
+        language: system
+        types_or: [python]
+        stages: [commit]
+
+      - id: pyright
+        name: pyright
+        entry: venv/bin/pyright
+        language: system
+        types_or: [python]
+        pass_filenames: false
+        args: [wfmarket/, tests/]
+        stages: [commit]

@@ -36,9 +36,12 @@ dependencies = { file = "requirements.txt" }
 packages = ["wfmarket"]
 include-package-data = true
 
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
 [tool.ruff]
 line-length = 125
-ignore = []
+lint.ignore = []
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
