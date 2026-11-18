@@ -92,6 +92,26 @@ The Warframe.Market API does not paginate responses. All results are returned as
 
 **Platform** is a filter parameter available for Listings/Auctions queries. It is an enum with values: `pc`, `ps4`, `xbox`, `switch`, `mobile`. Platform data is stable and rarely changes, so it uses an enum. Other query filters that reference shared data (e.g., item names) use plain strings.
 
+## Request Headers
+
+The client sends four headers on every request to configure how responses are delivered:
+
+### User-Agent
+
+Identifies the client library. Format: `wfmarket.py/{version}` (e.g., `wfmarket.py/0.1.0`). Users may customize this value; the fallback identifies the package as a Python implementation.
+
+### Language
+
+Specifies the preferred language for API responses. Header name is `Language` (no `X-` prefix). Values are lowercase locale codes: `ko`, `ru`, `de`, `fr`, `pt`, `zh-hans`, `zh-hant`, `es`, `it`, `pl`, `uk`, `tr`, `ja`, `en`. Default is `en`.
+
+### Platform
+
+Specifies the target platform for marketplace data. Header name is `Platform`. Values: `pc`, `ps4`, `xbox`, `switch`, `mobile`. Default is `pc`. Switch does not support crossplay — attempting to combine `Platform: switch` with `Crossplay: true` raises a `ValueError` at construction time.
+
+### Crossplay
+
+Controls whether crossplay-compatible orders are included in results. Header name is `Crossplay`, serialized as JSON boolean string (`true`/`false`). Default is `false`. When enabled, the client returns orders from the specified platform plus any orders where the order's user has `crossplay: true` — regardless of that order's platform.
+
 ## Cache
 
 **Cache** refers to local file-based storage (in `.wfmarket_cache/`) of manifest data. Cache invalidation is driven by comparing collection hashes from the **Versions** endpoint against stored hashes, and optionally by checking the `updatedAt` timestamp (ISO format string).

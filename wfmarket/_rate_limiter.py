@@ -1,33 +1,4 @@
-"""Multi-tier token bucket rate limiter for wfmarket.
-
-This module implements a self-written, multi-tier token bucket algorithm
-using only the standard library and asyncio. No external rate-limiting
-libraries are used.
-
-Architecture
-------------
-The rate limiter uses two tiers:
-
-1. **Global tier**: Shared across all requests to ``api.warframe.market``.
-   Default: 3 requests/second, bucket size 5.
-
-2. **Per-endpoint tier**: Individual buckets for URL prefix groups with
-   stricter limits.  Example: ``/auctions/`` at 15 requests/minute.
-
-Tokens are consumed on request dispatch (before the HTTP call).  Each
-request must acquire one token from each applicable tier.  If any tier
-has no available tokens the request is delayed until tokens refill.
-
-429 Retry
----------
-When a 429 response is received:
-
-* Obey ``Retry-After`` header (fallback 10 s).
-* Add jitter of 0.2–1.5 s (random).
-* Delay = ``2 ** consecutive_429s`` seconds, capped at 60 s.
-* After 5 consecutive 429s a :class:`WfMarketRateLimitError` is raised.
-
-"""
+"""Multi-tier token bucket rate limiter for wfmarket."""
 
 from __future__ import annotations
 
@@ -149,8 +120,31 @@ class TokenBucket:
 class RateLimiter:
     """Multi-tier token bucket rate limiter.
 
+    Architecture
+    ------------
+    Two tiers of buckets protect against excessive requests:
+
+    1. **Global tier**: Shared across all requests to ``api.warframe.market``.
+       Default: 3 requests/second, bucket size 5.
+
+    2. **Per-endpoint tier**: Individual buckets for URL prefix groups with
+       stricter limits. Example: ``/auctions/`` at 15 requests/minute.
+
+    Tokens are consumed on request dispatch (before the HTTP call). Each
+    request must acquire one token from each applicable tier. If any tier
+    has no available tokens the request is delayed until tokens refill.
+
+    429 Retry
+    ---------
+    When a 429 response is received:
+
+    * Obey ``Retry-After`` header (fallback 10 s).
+    * Add jitter of 0.2–1.5 s (random).
+    * Delay = ``2 ** consecutive_429s`` seconds, capped at 60 s.
+    * After 5 consecutive 429s a :class:`WfMarketRateLimitError` is raised.
+
     Manages a **global** bucket and an optional set of **per-endpoint**
-    buckets.  The singleton instance is exposed as
+    buckets. The singleton instance is exposed as
     ``wfmarket._rate_limiter.rate_limiter``.
 
     Args:

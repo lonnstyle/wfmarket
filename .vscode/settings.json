@@ -17,6 +17,7 @@
   // ─── Type Checking: Pyright ───────────────────────────────
   "python.analysis.typeCheckingMode": "strict",
   "python.analysis.autoImportCompletions": true,
+  "python.analysis.venvPath": "${workspaceFolder}",
   "python.analysis.autoSearchPaths": true,
   "python.analysis.useLibraryCodeForTypes": true,
   "python.analysis.diagnosticMode": "openFilesOnly",
