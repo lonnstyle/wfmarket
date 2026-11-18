@@ -6,14 +6,14 @@ repos:
         entry: venv/bin/ruff format
         language: system
         types_or: [python]
-        stages: [commit]
+        stages: [pre-commit]
 
       - id: ruff-check
         name: ruff check --fix
         entry: venv/bin/ruff check --fix
         language: system
         types_or: [python]
-        stages: [commit]
+        stages: [pre-commit]
 
       - id: pyright
         name: pyright
@@ -22,4 +22,4 @@ repos:
         types_or: [python]
         pass_filenames: false
         args: [wfmarket/, tests/]
-        stages: [commit]
+        stages: [pre-commit]
