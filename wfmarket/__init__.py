@@ -14,6 +14,7 @@ class VersionInfo(NamedTuple):
     releaselevel: str
     serial: int
 
+
 version_info = VersionInfo(major=0, minor=1, micro=0, releaselevel="alpha", serial=0)
 
 del NamedTuple, VersionInfo

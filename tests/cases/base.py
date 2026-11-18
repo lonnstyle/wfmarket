@@ -1,8 +1,9 @@
-from unittest import TestCase
+from unittest import IsolatedAsyncioTestCase
 
 __author__ = "lonnstyle"
 
-class BaseTest(TestCase):
+
+class BaseTest(IsolatedAsyncioTestCase):
     """Base class for all test cases.
 
     Args:
@@ -20,6 +21,4 @@ class BaseTest(TestCase):
 
         This method is called after each test method is executed. It can be used to clean up any resources or configurations that were set up in the setUp method.
         """
-        print('=> Result:')
-
-    
+        print("=> Result:")
